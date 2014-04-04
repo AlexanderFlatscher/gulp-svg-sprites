@@ -54,14 +54,17 @@ module.exports.svg = function (config) {
 
         var combined    = svgutil.buildSVGSprite(config.classNameSuffix, tasks, config);
         var css         = cssRender.render(combined.spriteData, config);
-        var previewPage = preview.render(css.elements, config);
 
-        this.push(new File({
-            cwd:  "./",
-            base: "./",
-            path: config.preview.svgSprite,
-            contents: new Buffer(previewPage.svgSprite.content)
-        }));
+        if(config.preview !== false){
+            var previewPage = preview.render(css.elements, config);
+            
+            this.push(new File({
+                cwd:  "./",
+                base: "./",
+                path: config.preview.svgSprite,
+                contents: new Buffer(previewPage.svgSprite.content)
+            }));
+        }
 
         this.push(new File({
             cwd:  "./",
